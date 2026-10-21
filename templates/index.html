@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Медицинский центр</title>
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <h1>🏥 Медицинский Центр</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Главная</a></li>
+                    {% if session.get('user_id') %}
+                        <li><a href="{{ url_for('appointment') }}">Запись на прием</a></li>
+                        {% if session.get('role') == 'admin' %}
+                            <li><a href="{{ url_for('admin_panel') }}">Админ-панель</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('logout') }}" class="btn-login">Выйти</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}" class="btn-login">Вход</a></li>
+                        <li><a href="{{ url_for('register') }}" class="btn-register">Регистрация</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Синяя обложка -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Забота о вашем здоровье — наш главный приоритет</h1>
+            <p>Современное оборудование, опытные врачи и внимание к каждому пациенту.</p>
+            <a href="{{ url_for('appointment') if session.get('user_id') else url_for('login') }}" class="btn-main">Записаться на прием</a>
+        </div>
+    </section>
+
+    <!-- Блок О нас -->
+    <section class="about container">
+        <h2>О нашей больнице</h2>
+        <p>Наш медицинский центр предоставляет полный спектр услуг: от профилактических осмотров до сложных операций. Мы гордимся нашей командой специалистов, которые используют передовые методы лечения и индивидуальный подход к каждому пациенту.</p>
+    </section>
+
+    <!-- Карточки врачей -->
+    <section class="doctors-section">
+        <div class="container">
+            <h2>Наши специалисты</h2>
+            <div class="doctors-grid">
+                <div class="doctor-card">
+                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Врач">
+                    <h3>Др. Александр Смирнов</h3>
+                    <p>Главный врач, Терапевт</p>
+                </div>
+                <div class="doctor-card">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Врач">
+                    <h3>Др. Елена Иванова</h3>
+                    <p>Кардиолог</p>
+                </div>
+                <div class="doctor-card">
+                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Врач">
+                    <h3>Др. Михаил Петров</h3>
+                    <p>Хирург</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq container">
+        <h2>Часто задаваемые вопросы</h2>
+        <div class="faq-item">
+            <h3>Как записаться на прием?</h3>
+            <p>Вам необходимо зарегистрироваться на сайте, после чего в личном кабинете выбрать «Запись на прием» и указать удобное время.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Работаете ли вы в выходные?</h3>
+            <p>Наши врачи принимают пациентов с понедельника по субботу с 8:00 до 20:00. В воскресенье работают только экстренные службы.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Могу ли я отменить запись?</h3>
+            <p>Да, вы можете отменить запись, связавшись с нами по телефону не позднее чем за 24 часа до приема.</p>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Медицинский Центр. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

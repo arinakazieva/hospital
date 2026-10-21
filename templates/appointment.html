@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запись на прием</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo"><a href="{{ url_for('home') }}" style="text-decoration:none; color:inherit;"><h1>🏥 Медицинский Центр</h1></a></div>
+            <nav><ul><li><a href="{{ url_for('home') }}">Главная</a></li><li><a href="{{ url_for('logout') }}">Выйти</a></li></ul></nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Запись на прием</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="post">
+                <label for="doctor">Выберите врача:</label>
+                <select id="doctor" name="doctor">
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}">{{ doctor.name }} - {{ doctor.specialty }}</option>
+                    {% endfor %}
+                </select>
+                <label for="appointment_date">Дата и время:</label>
+                <input type="datetime-local" id="appointment_date" name="appointment_date" required>
+                <label for="reason">Причина визита:</label>
+                <textarea id="reason" name="reason" rows="4"></textarea>
+                <button type="submit">Записаться</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

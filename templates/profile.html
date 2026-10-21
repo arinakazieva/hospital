@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой профиль</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo"><a href="{{ url_for('home') }}" style="text-decoration:none; color:inherit;"><h1>🏥 Медицинский Центр</h1></a></div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Главная</a></li>
+                    <li><a href="{{ url_for('appointment') }}">Запись на прием</a></li>
+                    {% if session.get('role') == 'admin' %}
+                        <li><a href="{{ url_for('admin_panel') }}">Админ-панель</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}" class="btn-login">Выйти</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Уведомления -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" style="margin-top: 20px;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="profile-wrapper">
+            <!-- Левая колонка: Аватарка и данные -->
+            <div class="profile-sidebar">
+                <div class="avatar-box">
+                    <img src="{{ url_for('static', filename='uploads/' + user.avatar) }}" alt="Аватар" class="profile-avatar">
+                </div>
+                
+                <h2>{{ user.username }}</h2>
+                <p class="user-email">{{ user.email }}</p>
+                <p class="user-role">Роль: {{ user.role }}</p>
+
+                <form method="POST" enctype="multipart/form-data" class="avatar-form">
+                    <label for="avatar" class="custom-file-upload">Изменить фото</label>
+                    <input type="file" id="avatar" name="avatar" accept="image/*" required>
+                    <button type="submit">Загрузить</button>
+                </form>
+            </div>
+
+            <!-- Правая колонка: Записи -->
+            <div class="profile-main">
+                <h2>Мои записи на прием</h2>
+                {% if appointments %}
+                    <div class="appointments-list">
+                        {% for appt in appointments %}
+                            <div class="appointment-card">
+                                <h3>Врач: {{ appt.doctor.name }}</h3>
+                                <p><strong>Специальность:</strong> {{ appt.doctor.specialty }}</p>
+                                <p><strong>Дата и время:</strong> {{ appt.appointment_date.strftime('%d.%m.%Y %H:%M') }}</p>
+                                <p><strong>Причина:</strong> {{ appt.reason or 'Не указана' }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="no-appointments">У вас пока нет записей.</p>
+                {% endif %}
+                <br>
+                <a href="{{ url_for('appointment') }}" class="btn-main">Записаться к врачу</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

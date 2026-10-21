@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo"><a href="{{ url_for('home') }}" style="text-decoration:none; color:inherit;"><h1>🏥 Админ-панель</h1></a></div>
+            <nav><ul><li><a href="{{ url_for('home') }}">На сайт</a></li><li><a href="{{ url_for('logout') }}">Выйти</a></li></ul></nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container" style="max-width: 600px;">
+            <h2>Управление</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 15px;">
+                    <a href="{{ url_for('add_doctor') }}" class="btn-main" style="display:block; text-align:center;">Добавить нового врача</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить врача</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo"><h1>🏥 Добавление врача</h1></div>
+            <nav><ul><li><a href="{{ url_for('admin_panel') }}">Назад в панель</a></li></ul></nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Новый врач</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="post">
+                <label for="name">Имя врача:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="specialty">Специальность:</label>
+                <input type="text" id="specialty" name="specialty" required>
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
